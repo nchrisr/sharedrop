@@ -1,3 +1,6 @@
+mod messages;
+mod peer;
+
 use axum::{
     extract::{
         connect_info::ConnectInfo,
@@ -6,14 +9,17 @@ use axum::{
     }};
 use axum::{Router, response::IntoResponse, routing::get};
 use std::{collections::HashMap, net::{IpAddr, SocketAddr}, sync::Arc};
-use tokio::{net::TcpListener, sync::Mutex};
+use tokio::{net::TcpListener, sync::{Mutex, mpsc}};
 use tower_http::services::ServeDir;
 use uuid::Uuid;
 
-type PeerMap = Arc<Mutex<HashMap<String, HashMap<Uuid, ()>>>>;
+use crate::{messages::SignalingMessage, peer::Peer};
+
+type PeerMap = Arc<Mutex<HashMap<String, HashMap<Uuid, Peer>>>>;
 
 const HOST: &str = "0.0.0.0";
 const PORT: u16 = 3000;
+const DEFAULT_MAX_MESSAGE_COUNT: usize = 32;
 
 #[tokio::main]
 async fn main() {
@@ -54,12 +60,19 @@ async fn ws_handler(
         tracing::info!("ID: {} assigned to new peer", peer_id);
         tracing::info!("Peer {} connected from subnet {}", peer_id, subnet);
 
+        let (tx, rx) = mpsc::channel::<SignalingMessage>(DEFAULT_MAX_MESSAGE_COUNT);
+
         {
             let mut map = peers.lock().await;
             if !map.contains_key(&subnet) {
                 map.insert(subnet.clone(), HashMap::new());
             }
-            map.get_mut(&subnet).unwrap().insert(peer_id, ());
+            let peer = Peer{
+                id: peer_id,
+                subnet:  subnet.clone(),
+                sender: tx
+            };
+            map.get_mut(&subnet).unwrap().insert(peer_id, peer);
 
             for key in map.keys() {
                 tracing::info!(
