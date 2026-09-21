@@ -27,3 +27,9 @@ cargo fmt       # format code
 cargo clippy    # lint
 cargo test      # run tests
 ```
+
+## Project docs
+
+- [`docs/STATUS.md`](docs/STATUS.md) — current state, milestones, what's next
+- [`docs/DECISIONS.md`](docs/DECISIONS.md) — design decisions and their rationale
+- [`CLAUDE.md`](CLAUDE.md) — orientation for AI-assisted sessions
