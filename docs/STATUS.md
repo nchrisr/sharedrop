@@ -8,15 +8,7 @@ A web app where anyone can paste text or drop files and share them between devic
 
 ## Milestones
 
-- [x] **M0 — Skeleton.** axum server, `/ws` route, static file serving, tracing.
-- [x] **M1 — Peer registry.** Subnet grouping, per-subnet peer map, `Peer` struct, per-peer channel, `SignalingMessage` enum.
-- [ ] **M2 — Signaling works.** Server parses incoming messages, routes offer/answer/ICE to the target peer, broadcasts join/leave within a subnet. Testable with two browser tabs / `websocat`.
-- [ ] **M3 — Frontend discovers peers.** Minimal page: connects to `/ws`, shows a list of peers on your subnet updating live.
-- [ ] **M4 — WebRTC DataChannel between two browsers.** Offer/answer/ICE exchange through the server; a DataChannel opens; send a "hello".
-- [ ] **M5 — Text sharing.** Paste text on one device, it appears on the other.
-- [ ] **M6 — File sharing.** Chunked file send over the DataChannel with progress; receiver saves it.
-- [ ] **M7 — Public-hosting readiness.** Trusted-proxy handling for client IP (`X-Forwarded-For`), TLS via proxy, IPv6 grouping, basic abuse limits.
-- [ ] **M8 — Polish & release.** UI, device names/icons, README for self-hosters, deploy the public instance.
+Moved to [`ROADMAP.md`](ROADMAP.md) — milestones M0–M8, plus the rename and the domains. Currently on **M2**, with the CrabShare rename queued ahead of it.
 
 ## Current state (as of 2026-09-21)
 
