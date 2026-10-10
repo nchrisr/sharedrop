@@ -1,6 +1,6 @@
 # Roadmap
 
-Where the project is going, in order. [`STATUS.md`](STATUS.md) is where it is *right now* — current state, the next few commits, session log. Tick items here as they land; move the detail to `STATUS.md` when a milestone becomes the active work.
+Where the project is going, in order. Tick items here as they land.
 
 Items marked **must** are commitments, not ideas.
 
@@ -14,18 +14,9 @@ Casing rule: `CrabShare` everywhere a human reads it, `crabshare` everywhere a m
 - [ ] `cargo check` — regenerates the `Cargo.lock` entry; don't hand-edit it
 - [ ] `static/index.html` — `<title>` and `<h1>`
 - [ ] `README.md` — heading, tagline, and repoint the `snapdrop.net` link at the GitHub repo (the domain is now a LimeWire ad page)
-- [ ] `CLAUDE.md` — heading
-- [ ] `Concepts.md` — heading (local, gitignored, no rush)
+- [ ] `AGENTS.md` — drop the "being renamed" note
 - [ ] GitHub — rename `nchrisr/sharedrop` to `nchrisr/crabshare`, then `git remote set-url origin`
 - [ ] Rename the local working directory, last, after the commit
-
-## Now — claim the names (must)
-
-Both were unregistered as of 2026-09-23. This is the only item on the list that someone else can take from us.
-
-- [ ] Register `crabshare.com`
-- [ ] Register `crabshare.app`
-- [ ] Optional: reserve `crabshare` on crates.io with a stub publish
 
 ## Milestones
 

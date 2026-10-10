@@ -8,7 +8,21 @@ A web app where anyone can paste text or drop files and share them between devic
 
 ## Milestones
 
-Moved to [`ROADMAP.md`](ROADMAP.md) — milestones M0–M8, plus the rename and the domains. Currently on **M2**, with the CrabShare rename queued ahead of it.
+Moved to [`ROADMAP.md`](ROADMAP.md) — milestones M0–M8, plus the rename. Currently on **M2**, with the CrabShare rename queued ahead of it.
+
+## Private tasks
+
+Kept here rather than in ROADMAP.md because this file is gitignored and the repo is public.
+
+**Claim the names (must).** Both were unregistered as of 2026-09-23. This is the only item on the list that someone else can take from us. (It was in the public ROADMAP.md until 2026-10-10, so it's in git history.)
+
+- [ ] Register `crabshare.com`
+- [ ] Register `crabshare.app`
+- [ ] Optional: reserve `crabshare` on crates.io with a stub publish
+
+**Rename follow-up.**
+
+- [ ] `Concepts.md` — update the heading (no rush)
 
 ## Current state (as of 2026-09-21)
 

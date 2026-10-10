@@ -35,7 +35,7 @@ Status legend: **settled** — deliberate, change only with a good reason. **fir
 **Decision.** Both are supported targets. The server binds `0.0.0.0` so LAN devices can reach it.
 
 **Consequences.**
-- Peer discovery must work when clients connect directly (LAN, `ConnectInfo` gives the real client IP) **and** when they connect through a reverse proxy (public hosting, `ConnectInfo` gives the proxy's IP for everyone). The second case needs `X-Forwarded-For` / `Forwarded` header handling, gated so it's only trusted when actually behind a proxy. **Not yet implemented — see STATUS.md.**
+- Peer discovery must work when clients connect directly (LAN, `ConnectInfo` gives the real client IP) **and** when they connect through a reverse proxy (public hosting, `ConnectInfo` gives the proxy's IP for everyone). The second case needs `X-Forwarded-For` / `Forwarded` header handling, gated so it's only trusted when actually behind a proxy. **Not yet implemented — planned for M7, see ROADMAP.md.**
 - TLS: browsers require a secure context for some WebRTC features. On a public host TLS comes from the proxy; on a LAN `http://192.168.x.x` counts as insecure — this needs investigating before the WebRTC work. **Open question.**
 
 ---
@@ -60,7 +60,7 @@ Status legend: **settled** — deliberate, change only with a good reason. **fir
 
 **Why.** Kept the first version simple.
 
-**Should revisit.** Many mobile networks and some ISPs are IPv6-first. A key derived from the IPv6 prefix (e.g. /64) would be the equivalent of the /24 grouping. Note that `[::1]` (IPv6 localhost) is also rejected, which can surprise you when testing locally.
+**Should revisit.** Many mobile networks and some ISPs are IPv6-first. A key derived from the IPv6 prefix (e.g. /64) would be the equivalent of the /24 grouping. Note that in practice IPv6 clients never reach this check: the server binds `0.0.0.0`, which listens on IPv4 only, so IPv6 connections (including `[::1]`, IPv6 localhost) are refused before they reach the handler. Supporting IPv6 means changing the bind address as well as `subnet_key()`.
 
 ---
 
@@ -102,11 +102,3 @@ Status legend: **settled** — deliberate, change only with a good reason. **fir
 - **Never:** SDP or ICE candidate payloads, file names or sizes, text content, anything from a DataChannel.
 
 **Why.** SDP and ICE contain local IPs and network topology; content is the user's. The public instance must be trustworthy without the user having to take anyone's word for it.
-
----
-
-## D10. `Concepts.md` is a local learning journal, gitignored — settled
-
-**Decision.** `Concepts.md` in the repo root holds explanations of concepts encountered while building. It is in `.gitignore` and not committed.
-
-**Why.** It's personal study notes, not project documentation. Claude should suggest entries for it when new concepts come up, but never `git add` it.

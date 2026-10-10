@@ -30,6 +30,6 @@ cargo test      # run tests
 
 ## Project docs
 
-- [`docs/STATUS.md`](docs/STATUS.md) — current state, milestones, what's next
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — milestones and what's next
 - [`docs/DECISIONS.md`](docs/DECISIONS.md) — design decisions and their rationale
-- [`CLAUDE.md`](CLAUDE.md) — orientation for AI-assisted sessions
+- [`AGENTS.md`](AGENTS.md) — orientation and coding conventions, for contributors and AI coding agents
