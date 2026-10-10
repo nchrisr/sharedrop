@@ -1,15 +1,21 @@
 mod messages;
 mod peer;
 
-use axum::{
-    extract::{
-        connect_info::ConnectInfo,
-        State,
-        ws::{WebSocket, WebSocketUpgrade}
-    }};
+use axum::extract::{
+    State,
+    connect_info::ConnectInfo,
+    ws::{WebSocket, WebSocketUpgrade},
+};
 use axum::{Router, response::IntoResponse, routing::get};
-use std::{collections::HashMap, net::{IpAddr, SocketAddr}, sync::Arc};
-use tokio::{net::TcpListener, sync::{Mutex, mpsc}};
+use std::{
+    collections::HashMap,
+    net::{IpAddr, SocketAddr},
+    sync::Arc,
+};
+use tokio::{
+    net::TcpListener,
+    sync::{Mutex, mpsc},
+};
 use tower_http::services::ServeDir;
 use uuid::Uuid;
 
@@ -40,16 +46,20 @@ async fn main() {
 
     let listener = TcpListener::bind(&address).await.unwrap();
     tracing::info!("Server running on {}", &address);
-    axum::serve(listener, router.into_make_service_with_connect_info::<SocketAddr>())
-        .await.unwrap();
+    axum::serve(
+        listener,
+        router.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .unwrap();
 }
 
 async fn ws_handler(
     State(peers): State<PeerMap>,
     ConnectInfo(addr): ConnectInfo<SocketAddr>,
-    ws: WebSocketUpgrade
+    ws: WebSocketUpgrade,
 ) -> impl IntoResponse {
-    ws.on_upgrade( move |mut socket: WebSocket| async move {
+    ws.on_upgrade(move |mut socket: WebSocket| async move {
         // socket is the live WebSocket connection, handle it here.
         let Some(subnet) = subnet_key(addr) else {
             tracing::warn!("Rejected non-IPV4 connection from {}", addr);
@@ -67,10 +77,10 @@ async fn ws_handler(
             if !map.contains_key(&subnet) {
                 map.insert(subnet.clone(), HashMap::new());
             }
-            let peer = Peer{
+            let peer = Peer {
                 id: peer_id,
-                subnet:  subnet.clone(),
-                sender: tx
+                subnet: subnet.clone(),
+                sender: tx,
             };
             map.get_mut(&subnet).unwrap().insert(peer_id, peer);
 
@@ -83,7 +93,6 @@ async fn ws_handler(
             }
 
             tracing::info!("Total active subnets: {}", map.len());
-
         }
 
         while let Some(msg) = socket.recv().await {
@@ -104,7 +113,6 @@ async fn ws_handler(
         }
 
         tracing::info!("Peer {} disconnected", peer_id);
-
     })
 }
 
@@ -114,7 +122,7 @@ fn subnet_key(addr: SocketAddr) -> Option<String> {
             let octets = ip.octets(); // get an array of the parts of the IP address.
             format!("{}_{}_{}", octets[0], octets[1], octets[2]).into()
             // build the key from the first 3 octets
-        },
+        }
         IpAddr::V6(_) => None,
     }
 }
@@ -124,13 +132,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_subnet_key_ipv4(){
+    fn test_subnet_key_ipv4() {
         let _addr: SocketAddr = "198.168.1.5:3000".parse().unwrap();
         assert_eq!(subnet_key(_addr), Some("198_168_1".to_string()));
     }
 
     #[test]
-    fn test_subnet_key_ipv6(){
+    fn test_subnet_key_ipv6() {
         // [::1] is the ipv6 equivalent of localhost
         let _addr: SocketAddr = "[::1]:3000".parse().unwrap();
         assert_eq!(subnet_key(_addr), None);
