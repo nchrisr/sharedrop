@@ -1,6 +1,6 @@
 # Design decisions
 
-Each entry: the context, what was decided, why, and whether it's settled. Add a new entry when a choice is made that a future reader (or a future Claude session) might otherwise second-guess or accidentally undo.
+Each entry: the context, what was decided, why, and whether it's settled. Add a new entry when a choice is made that a future reader might otherwise second-guess or accidentally undo.
 
 Status legend: **settled** — deliberate, change only with a good reason. **first-pass** — it works, chosen without much deliberation, open to revisiting.
 
@@ -20,17 +20,17 @@ Status legend: **settled** — deliberate, change only with a good reason. **fir
 
 ## D2. Mostly Rust — settled
 
-**Context.** The project exists partly to learn Rust and network programming.
+**Context.** The server is a long-running network service that self-hosters run on their own machines.
 
 **Decision.** Backend in Rust (axum + tokio). Frontend uses web technologies as needed; no constraint on framework choice there.
 
-**Why.** Learning goal. Also a single static binary is easy for self-hosters to run.
+**Why.** A single static binary is easy for self-hosters to run.
 
 ---
 
 ## D3. Two deployment modes: self-hosted LAN and public instance — settled
 
-**Context.** The owner wants (a) anyone to be able to run it on their own machine and reach it from their phone via the machine's LAN IP, and (b) a public URL that offers the same privacy.
+**Context.** Anyone should be able to (a) run it on their own machine and reach it from their phone via the machine's LAN IP, or (b) use a public URL that offers the same privacy.
 
 **Decision.** Both are supported targets. The server binds `0.0.0.0` so LAN devices can reach it.
 
@@ -68,7 +68,7 @@ Status legend: **settled** — deliberate, change only with a good reason. **fir
 
 **Decision.** One shared map, nested by subnet then by peer ID, guarded by tokio's async Mutex, shared via `Arc` through axum `State`.
 
-**Why.** Straightforward and easy to reason about while learning. The nesting makes "all peers on my subnet" a single lookup.
+**Why.** Straightforward and easy to reason about. The nesting makes "all peers on my subnet" a single lookup.
 
 **Alternatives.** `std::sync::Mutex` is cheaper and fine as long as the lock is never held across an `.await` (currently true). `DashMap` or `RwLock` if contention ever matters. It won't at this project's scale — don't change this without a reason.
 

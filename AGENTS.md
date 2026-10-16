@@ -2,7 +2,7 @@
 
 > **Living document.** Kept short on purpose and grown as the project does. If something here is wrong, fix it here.
 
-## Part 1 — Orientation
+## Part 1: Orientation
 
 A local-network text and file sharing web app, in the spirit of AirDrop and Snapdrop. A Rust server does WebRTC **signaling only**: it introduces peers and relays their connection setup. Content moves directly between browsers over WebRTC DataChannels.
 
@@ -53,7 +53,7 @@ There is no CI and there are no integration tests. Check `/ws` by hand with two 
 - **Both deployment modes are first-class:** self-hosted on a LAN, and a public instance behind a reverse proxy (D3). Behind a proxy, `ConnectInfo` holds the proxy's IP, not the client's. Trusted-proxy handling is not built yet (M7).
 - Decisions marked **settled** in `docs/DECISIONS.md` change only together with an update to their entry. Record new design choices there.
 
-## Part 2 — Coding conventions
+## Part 2: Coding conventions
 
 **Principle:** prefer readability and explicitness over cleverness or terseness, and accept some verbosity for it, as long as performance doesn't suffer. The rules below cover only places where this project departs from default Rust practice or pins down something that is ambiguous by default.
 
